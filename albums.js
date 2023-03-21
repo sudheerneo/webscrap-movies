@@ -10,7 +10,7 @@ $(document).ready(function () {
     const screenWidth = screen.width;
 
     //check auto bot initiate backup else show albumbs
-    path === "/latestmovies/dbupdateservice.php"
+    path === "/dbupdateservice.php"
         ? (new UpdateData(), $("#spinnerModal").modal("hide"))
         : new LoadMovies().checkDatabaseAPI();
 
