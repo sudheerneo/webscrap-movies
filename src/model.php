@@ -36,7 +36,16 @@ function get_web_page($url)
     return $header;
 }
 
-$url = "https://www.1tamilmv.cloud";
+// ENV FILE GRABBER
+$dotenvPath = __DIR__ . '/../.env'; // define the path to your .env file
+$dotenv = parse_ini_file($dotenvPath);
+
+foreach ($dotenv as $key => $value) {
+    $_ENV[$key] = $value;
+}
+$SOURCEDOMAIN = $_ENV['SOURCEDOMAIN'];
+
+$url = $SOURCEDOMAIN;
 $result = get_web_page($url);
 
 if ($result === false) {
