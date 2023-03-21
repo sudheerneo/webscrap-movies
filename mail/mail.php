@@ -1,6 +1,6 @@
 <?php
 
-  //Import PHPMailer classes into the global namespace
+//Import PHPMailer classes into the global namespace
 //These must be at the top of your script, not inside a function
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
@@ -15,33 +15,40 @@ require 'PHPMailer/src/SMTP.php';
 $mail = new PHPMailer(true);
 
 $compose = "";
-if ($_SERVER["REQUEST_METHOD"] == "POST")
-{
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // collect values of post
     $compose = json_decode(file_get_contents("php://input"));
-    if (empty($compose))
-    {
+    if (empty($compose)) {
         echo "No data recieved to process";
-    }
-    else
-    {
+    } else {
         //proceed to send mail
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                
+
         try {
-            //Server settings
+
+            // ENV FILE GRABBER
+            $dotenvPath = __DIR__ . '/../../.env'; // define the path to your .env file
+            $dotenv = parse_ini_file($dotenvPath);
+
+            foreach ($dotenv as $key => $value) {
+                $_ENV[$key] = $value;
+            }
+            $USESMTPUSER = $_ENV['USESMTPUSER'];
+            $USESMTPPASS = $_ENV['USESMTPPASS'];
+            $USEMAILTO = $_ENV['USEMAILTO'];
+
             $mail->SMTPDebug = SMTP::DEBUG_SERVER;                      //Enable verbose debug output
             $mail->isSMTP();                                            //Send using SMTP
             $mail->Host       = 'smtp.gmail.com';                     //Set the SMTP server to send through
             $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
-            $mail->Username   = 'robotalertbot@gmail.com';                     //SMTP username
-            $mail->Password   = 'dysvorkpmmuygyzb';                               //SMTP password
+            $mail->Username   = $USESMTPUSER;                     //SMTP username
+            $mail->Password   = $USESMTPPASS;                               //SMTP password
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
             $mail->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
 
             //Recipients
-            $mail->setFrom('robotalertbot@gmail.com', 'Bot');
-            $mail->addAddress('mailtobsudheer@gmail.com', 'Sudheer');     //Add a recipient
+            $mail->setFrom($USESMTPUSER, 'Bot');
+            $mail->addAddress($USEMAILTO, 'Sudheer');     //Add a recipient
             // $mail->addAddress('ellen@example.com');               //Name is optional
             // $mail->addReplyTo('info@example.com', 'Information');
             // $mail->addCC('cc@example.com');
@@ -66,6 +73,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     }
 }
-
-
-?>

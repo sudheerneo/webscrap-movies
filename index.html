@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<?php $cg = '' ?>
 <html lang="en">
 
 <head>
@@ -10,19 +9,19 @@
 	<!-- Latest compiled and minified CSS -->
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Google+Sans:300,400,800">
-	<link rel="stylesheet" href="devices.css">
-	<link rel="stylesheet" href="albums.css">
+	<link rel="stylesheet" href="src/devices.css">
+	<link rel="stylesheet" href="src/albums.css">
 	<!-- jQuery library -->
 	<script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
 </head>
 
 <body>
 	<nav class="navbar fixed-top navbar-expand-lg bg-body-tertiary navbar bg-dark" data-bs-theme="dark" style="z-index: 1040;">
-		<div class="container-fluid"> <a class="navbar-brand" href="/albums.php">Albums Viewer</a>
+		<div class="container-fluid"> <a class="navbar-brand" href="/src/albums.php">Albums Viewer</a>
 			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> <span class="navbar-toggler-icon"></span> </button>
 			<div class="collapse navbar-collapse  justify-content-end" id="navbarNav">
 				<ul class="navbar-nav">
-					<li class="nav-item"> <a class="nav-link active" aria-current="page" href="/albums.php">Home</a> </li>
+					<li class="nav-item"> <a class="nav-link active" aria-current="page" href="/">Home</a> </li>
 					<li class="nav-item"> <a class="nav-link" href="javascript:validate()">Data updater</a> </li>
 					<li class="nav-item"> <a class="nav-link" href="#">API tester</a> </li>
 				</ul>
@@ -65,9 +64,7 @@
 			</div><!-- <div class="tab-pane fade" id="nav-disabled" role="tabpanel" aria-labelledby="nav-disabled-tab" tabindex="0">...</div> -->
 		</div>
 	</div><!-- tabArea end div -->
-	<?php
-	// include 'src/mail/mail.php';
-	?>
+
 	<div class="cnt" style="padding-top: 100px;">
 		<div id="statBox" class="container">
 			<h4 class='text-center mb-3'>Status of the task</h4>
@@ -86,10 +83,6 @@
 	<div id="downloadViewer" class="modal col-6 col-md-12 col-xs-12">
 		<div class="modal-dialog modal-fullscreen force-fullscreen">
 			<div class="modal-content">
-				<!-- <div class="modal-header">
-					<h5 class="modal-title">Downloader</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-				</div> -->
 				<div class="modal-body text-center" id="dContent">
 					<div class="row align-items-center">
 						<div class="col">
@@ -171,7 +164,7 @@
 		</script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/fetch-jsonp/1.0.6/fetch-jsonp.min.js"></script>
-		<script src="albums.js"></script>
+		<script src="src/albums.js"></script>
 </body>
 
 </html>

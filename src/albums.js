@@ -13,7 +13,7 @@ $(document).ready(function () {
     path === "/dbupdateservice.php"
         ? (new UpdateData(), $("#spinnerModal").modal("hide"))
         : new LoadMovies().checkDatabaseAPI();
-
+    // new Mailer(150, 500);
     screenWidth < 700
         ? $(".tabNav").html(`
         <div class="nav nav-tabs fixed-top bg-dark mt-5 nav-fill justify-content-center pt-3 ps-2 pe-2" id="nav-tab" style="font-size: 9px;" role="tablist">
@@ -290,7 +290,7 @@ class UpdateData {
         $("#progms").text(""), $("#work").html("");
         this.progressBar("<b>Preparing.....</b>");
         try {
-            const response = await fetch("model.php");
+            const response = await fetch("/src/model.php");
             const data = await response.text();
             $("#total").text(5); //progress progressBar
             $("#count").text(5);
@@ -353,7 +353,7 @@ class UpdateData {
         // get each Movie data
         const getMovies = async (refdata) => {
             try {
-                const response = await fetch("getmovies.php", {
+                const response = await fetch("src/getmovies.php", {
                     method: "post",
                     body: JSON.stringify(refdata),
                 });
@@ -519,18 +519,3 @@ const validate = () => {
         ? new UpdateData()
         : alert("You are fired. I dont trust you anymore. Getout");
 };
-
-const testFunction = async (refdata) => {
-    try {
-        const response = await fetch(
-            "http://sudheer.epizy.com/src/mail/template.html"
-        );
-        const data = response.text();
-        console.log(response);
-    } catch (err) {
-        console.error(err);
-        // return { CatchedHttpError: err };
-    }
-};
-
-// testFunction(14);
