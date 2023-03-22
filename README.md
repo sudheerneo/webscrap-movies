@@ -1,5 +1,5 @@
 # webscap-movietorrents
-Its webscapper test project that scraps latest Indian movie torrents  from different website and make json api with that to dispay content properly for best user experience. If you want to try, rename example.env to .env and fill details.
+Its a webscapper test project that scraps latest Indian movie torrents  from different website and make json api with that to dispay content properly for best user experience. If you want to try, rename example.env to .env and fill details.
 
 ## [![Repography logo](https://images.repography.com/logo.svg)](https://repography.com) / Recent activity [![Time period](https://images.repography.com/35428199/sudheerneo/webscap-movietorrents/recent-activity/_60p67ceJg9uDcp4I6oS1ga0ww3UX_SDz6XckpH1zH8/S_1FJNaXYzusVjlJNwNjU9SfwUPEAN4xt9UsudbHVNk_badge.svg)](https://repography.com)
 [![Timeline graph](https://images.repography.com/35428199/sudheerneo/webscap-movietorrents/recent-activity/_60p67ceJg9uDcp4I6oS1ga0ww3UX_SDz6XckpH1zH8/S_1FJNaXYzusVjlJNwNjU9SfwUPEAN4xt9UsudbHVNk_timeline.svg)](https://github.com/sudheerneo/webscap-movietorrents/commits)
