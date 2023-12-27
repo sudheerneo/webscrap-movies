@@ -6,13 +6,13 @@ $(document).ready(function () {
     $("#spinnerModal").modal("hide");
   }, 5000);
   const path = $(location).attr("pathname");
-  // new Backend("Hello").data();
   const screenWidth = screen.width;
 
   //check auto bot initiate backup else show albumbs
   path === "/dbupdateservice.php"
     ? (new UpdateData(), $("#spinnerModal").modal("hide"))
     : new LoadMovies().checkDatabaseAPI();
+
   // new Mailer(150, 500);
   screenWidth < 700
     ? $(".tabNav").html(`
@@ -59,9 +59,9 @@ class LoadMovies {
   // update fileusing this function
   checkDatabaseAPI = async () => {
     try {
-      //   const response = await fetch(
-      //     window.location.href + "/src/showcaselocal.json"
-      //   );
+      // const response = await fetch(
+      //   window.location.href + "/src/showcaselocal.json"
+      // );
       const url = "https://sudheerneo.github.io/json_test_api/";
       const response = await fetch(url + "trendingMovies.json");
       const data = await response.json();
@@ -74,13 +74,14 @@ class LoadMovies {
           data[0].updatedOn
         ).toLocaleDateString()} `
       );
-      $(".navbar-nav li:nth-child(3) a")
-        .text(
-          `Db Version ${new Date(data[0].updatedOn)
-            .toLocaleDateString()
-            .replace(/\//g, ":")} `
-        )
-        .css({ color: "lightpink" });
+      $(".navbar-nav li:nth-child(3) a").text(
+        `Db Version - ${new Date(data[0].updatedOn)
+          .toLocaleDateString()
+          .replace(/\//g, ":")} `
+      );
+      $(".navbar-nav li:nth-child(1) a").hide();
+      $(".navbar-nav li:nth-child(2) a").hide();
+
       const toast = new bootstrap.Toast($("#liveToast"));
       toast.show(); //toast end
 
