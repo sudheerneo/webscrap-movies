@@ -16,6 +16,9 @@ function get_web_page($url)
         CURLOPT_CONNECTTIMEOUT => 120,
         CURLOPT_TIMEOUT => 120,
         CURLOPT_MAXREDIRS => 10,
+        CURLOPT_SSL_VERIFYPEER => true,  // Set to true to perform SSL certificate verification
+        CURLOPT_SSL_VERIFYHOST => 2,     // Check the existence of a common name and verify that it matches the hostname provided
+  
     ];
 
     $ch = curl_init($url);

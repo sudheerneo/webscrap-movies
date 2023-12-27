@@ -13,6 +13,16 @@ body {
   color: white;
   /* text-align: center;/ */
 }
+/* Media query to hide scrollbars when screen width is less than 1000px */
+@media (max-width: 960px) {
+  body {
+    -ms-overflow-style: none; /* Internet Explorer 10+ */
+    scrollbar-width: none; /* Firefox */
+  }
+  body::-webkit-scrollbar {
+    display: none; /* Safari and Chrome */
+  }
+}
 .accordion {
   border: 4px solid white;
   border-radius: 15px;
