@@ -367,6 +367,52 @@ class LoadMovies {
     }); //end of each loops
   };
 
+  downloadFile(title, url) {
+    console.log("donwload file called");
+    console.log(`title: ${title}\n url : ${url}`);
+    fetch(url)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Error: Failed to download file");
+        }
+
+        // Extract content type and content disposition from response headers
+        const contentType = response.headers.get("Content-Type") || "";
+        const contentDisposition =
+          response.headers.get("Content-Disposition") || "";
+
+        // Set content type and content disposition headers
+        if (contentType) {
+          document.contentType = contentType;
+        }
+        if (contentDisposition) {
+          document.contentDisposition = contentDisposition;
+        }
+
+        // Trigger file download
+        return response.blob();
+      })
+      .then((blob) => {
+        // Create a blob URL for the blob
+        const blobUrl = URL.createObjectURL(blob);
+
+        // Create a temporary link element
+        const link = document.createElement("a");
+        link.href = blobUrl;
+        link.download = title;
+
+        // Trigger the click event on the link to start the download
+        document.body.appendChild(link);
+        link.click();
+
+        // Remove the link from the document
+        document.body.removeChild(link);
+      })
+      .catch((error) => {
+        console.error(error.message);
+      });
+  }
+
   // showing modal to download content
   downloadAlert = (lang, curLink) => {
     const data = JSON.parse(window.localStorage.getItem(lang));
@@ -458,11 +504,17 @@ class LoadMovies {
                             </a>
                         </div>
                         <div class="col">
-                            <a href="${
-                              window.location.href
-                            }src/downloadFile.php?title=${encodeURIComponent(
-        movieName
-      )}&url=${encodeURIComponent(movieTorent)}" style="text-decoration: none">
+                        <a href="javascript:void(0);" onclick="
+                            const loadMoviesInstance = new LoadMovies();
+                            loadMoviesInstance.downloadFile(
+                            decodeURIComponent('${encodeURIComponent(
+                              movieName
+                            )}'),
+                            decodeURIComponent('${encodeURIComponent(
+                              movieTorent
+                            )}')
+                        );
+                    " style="text-decoration: none">
                             <img src=${
                               window.location.href + "images/torrent.png"
                             } height="32" width="32" />
