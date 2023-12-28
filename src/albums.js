@@ -7,7 +7,7 @@ $(document).ready(function () {
   }, 5000);
   const path = $(location).attr("pathname");
   const screenWidth = screen.width;
-  alert(screenWidth);
+  // alert(screenWidth);
 
   //check auto bot initiate backup else show albumbs
   path === "/dbupdateservice.php"
