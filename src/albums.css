@@ -303,6 +303,18 @@ h1 {
     text-align: center;
   }
 }
+
+@media only screen and (max-width: 350px) {
+  .device {
+    margin-top: -130px;
+    /* transform-origin: 1% 10%; */
+    transform: scale(0.4);
+  }
+  #movieTitle {
+    margin-top: -150px;
+    text-align: center;
+  }
+}
 @media only screen and (min-device-width: 900px) and (max-device-width: 2024px) and (orientation: landscape) {
   /* For landscape layouts only */
   .container_foto {

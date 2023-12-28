@@ -1,56 +1,60 @@
 $(document).ready(function () {
-  $("#statBox").hide();
-  $(".tabArea").hide();
+  // $("#statBox").hide();
+  // $(".tabArea").hide();
   $("#spinnerModal").modal("show");
   setTimeout(() => {
     $("#spinnerModal").modal("hide");
   }, 5000);
   const path = $(location).attr("pathname");
   const screenWidth = screen.width;
+  alert(screenWidth);
 
   //check auto bot initiate backup else show albumbs
   path === "/dbupdateservice.php"
     ? (new UpdateData(), $("#spinnerModal").modal("hide"))
     : new LoadMovies().checkDatabaseAPI();
 
-  // new Mailer(150, 500);
-  screenWidth < 700
-    ? $(".tabNav").html(`
-        <div class="nav nav-tabs fixed-top bg-dark mt-5 nav-fill justify-content-center pt-3 ps-2 pe-2" id="nav-tab" style="font-size: 9px;" role="tablist">
-          <button class="nav-link active" id="nav-allLaunguages-tab" data-bs-toggle="tab" data-bs-target="#nav-allLaunguages" type="button" role="tab" aria-controls="nav-home" aria-selected="true">All</button>
-				<button class="nav-link" id="nav-english-tab" data-bs-toggle="tab" data-bs-target="#nav-english" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">English</button>
-				<button class="nav-link" id="nav-tamil-tab" data-bs-toggle="tab" data-bs-target="#nav-tamil" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">தமிழ்</button>
-				<button class="nav-link" id="nav-telugu-tab" data-bs-toggle="tab" data-bs-target="#nav-telugu" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">తెలుగు</button>
-				<button class="nav-link" id="nav-hindi-tab" data-bs-toggle="tab" data-bs-target="#nav-hindi" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">हिंदी</button>
-				<button class="nav-link" id="nav-kannada-tab" data-bs-toggle="tab" data-bs-target="#nav-kannada" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">ಕನ್ನಡ</button>
-				<button class="nav-link" id="nav-malayalam-tab" data-bs-toggle="tab" data-bs-target="#nav-malayalam" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">മലയാളം</button>
-        </div>'
-      `)
-    : "";
+  // // new Mailer(150, 500);
+  // screenWidth < 700
+  //   ? $(".tabNav").html(`
+  //       <div class="nav nav-tabs fixed-top bg-dark mt-5 nav-fill justify-content-center pt-3 ps-2 pe-2" id="nav-tab" style="font-size: 9px;" role="tablist">
+  //     	<button class="nav-link" id="nav-english-tab" data-bs-toggle="tab" data-bs-target="#nav-english" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">English</button>
+  // 			<button class="nav-link" id="nav-tamil-tab" data-bs-toggle="tab" data-bs-target="#nav-tamil" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">தமிழ்</button>
+  // 			<button class="nav-link" id="nav-telugu-tab" data-bs-toggle="tab" data-bs-target="#nav-telugu" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">తెలుగు</button>
+  // 			<button class="nav-link" id="nav-hindi-tab" data-bs-toggle="tab" data-bs-target="#nav-hindi" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">हिंदी</button>
+  //       </div>'
+  //     `)
+  //   : "";
 
   $("#dbupdateCloud").on("click", function () {
     new LoadMovies().albumsDBupdate();
   });
   // clickers for filer
   $("#nav-english-tab").on("click", function () {
-    new LoadMovies().pageUpdate("Eng");
+    new LoadMovies().pageUpdateTrigger("Eng");
   });
   $("#nav-tamil-tab").on("click", function () {
-    new LoadMovies().pageUpdate("Tam");
+    new LoadMovies().pageUpdateTrigger("Tam");
   });
   $("#nav-telugu-tab").on("click", function () {
-    new LoadMovies().pageUpdate("Tel");
+    new LoadMovies().pageUpdateTrigger("Tel");
   });
   $("#nav-hindi-tab").on("click", function () {
-    new LoadMovies().pageUpdate("Hin");
+    new LoadMovies().pageUpdateTrigger("Hin");
   });
   $("#nav-malayalam-tab").on("click", function () {
-    new LoadMovies().pageUpdate("Mal");
+    new LoadMovies().pageUpdateTrigger("Mal");
   });
   $("#nav-kannada-tab").on("click", function () {
-    new LoadMovies().pageUpdate("Kan");
+    new LoadMovies().pageUpdateTrigger("Kan");
   });
 });
+
+$(window).width() < 960 &&
+  ($("#nav-malayalam-tab").hide(),
+  $("#nav-tamil-tab").hide(),
+  $("#nav-hindi-tab").hide(),
+  $("#nav-kannada-tab").hide());
 
 //retrieve stored json file on server and store as window object that can access faster later requests
 class LoadMovies {
@@ -64,15 +68,50 @@ class LoadMovies {
       // );
       const url = "https://sudheerneo.github.io/json_test_api/";
       const response = await fetch(url + "trendingMovies.json");
-      const data = await response.json();
-      window.localStorage.setItem("albumData", JSON.stringify(data));
+      var data = await response.json();
+
+      const tel = data.filter((item) => item.title.includes("Tel"));
+      const eng = data.filter((item) => item.title.includes("Eng"));
+      const tam = data.filter((item) => item.title.includes("Tam"));
+      const hin = data.filter((item) => item.title.includes("Hin"));
+      const mal = data.filter((item) => item.title.includes("Mal"));
+      const kan = data.filter((item) => item.title.includes("Kan"));
+
+      const albums = {
+        all: data,
+        tel: tel,
+        eng: eng,
+        tam: tam,
+        hin: hin,
+        mal: mal,
+        kan: kan,
+      };
+      try {
+        if ($(window).width() > 960) {
+          window.localStorage.clear();
+          window.localStorage.setItem("Tel", JSON.stringify(tel.slice(0, 200)));
+          window.localStorage.setItem("Eng", JSON.stringify(eng.slice(0, 100)));
+          window.localStorage.setItem("Tam", JSON.stringify(tam.slice(0, 100)));
+          window.localStorage.setItem("Hin", JSON.stringify(hin.slice(0, 100)));
+          window.localStorage.setItem("Mal", JSON.stringify(mal.slice(0, 100)));
+          window.localStorage.setItem("Kan", JSON.stringify(kan.slice(0, 100)));
+        } else {
+          window.localStorage.clear();
+          window.localStorage.setItem("Tel", JSON.stringify(tel.slice(0, 200)));
+          window.localStorage.setItem("Eng", JSON.stringify(eng.slice(0, 100)));
+        }
+      } catch (error) {
+        console.error("Error saving data to localStorage:", error);
+      }
+
+      // window.localStorage.setItem("albumData", JSON.stringify(data));
       // console.log(JSON.parse(window.localStorage.getItem("albumData")));
-      this.pageUpdate("All");
+      this.pageUpdateTrigger("Tel");
       // show toast
       $(".toast-body").text(
-        `Total ${data.length} movies data loaded. Db Date :  ${new Date(
-          data[0].updatedOn
-        ).toLocaleDateString()} `
+        `Db Date :  ${new Date(data[0].updatedOn).toLocaleDateString()}. ${
+          data.length
+        } movies pulled`
       );
       $(".navbar-nav li:nth-child(3) a").text(
         `Db Version - ${new Date(data[0].updatedOn)
@@ -122,11 +161,104 @@ class LoadMovies {
     }
   };
 
-  //pageUpdata function
-  pageUpdate = (filter) => {
+  pageUpdateTrigger = (lang) => {
+    const movies = JSON.parse(window.localStorage.getItem(lang));
+    const rowItems = parseInt($(window).width() / 250);
+    const colItems = parseInt($(window).height() / 390);
+    const moviesOnPage = $(window).width() > 960 ? rowItems * colItems : 10; // for mobile show 10 per page
+    const totalPages = Math.ceil(movies.length / moviesOnPage);
+
+    const generatePagination = (currentPage) => {
+      const maxVisiblePages = 5;
+      const halfVisible = Math.floor(maxVisiblePages / 2);
+
+      let startPage = Math.max(1, currentPage - halfVisible);
+      let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+      renderPagination;
+      if (endPage - startPage + 1 < maxVisiblePages) {
+        startPage = Math.max(1, endPage - maxVisiblePages + 1);
+      }
+
+      let paginationHTML = `<li class="page-item ${
+        // currentPage === 1 ? "disabled" : ""
+        "disabled"
+      }">
+        <a class="page-link" href="#" aria-label="Previous">
+          <span aria-hidden="true">&laquo;</span>
+        </a>
+      </li>`;
+
+      for (let i = startPage; i <= endPage; i++) {
+        paginationHTML += `<li class="page-item ${
+          i === currentPage ? "active" : ""
+        }">
+          <a class="page-link" href="#" data-page="${i}">${i}</a>
+        </li>`;
+      }
+      renderPagination;
+
+      paginationHTML += `<li class="page-item ${
+        // currentPage === totalPages ? "disabled" : ""
+        "disabled"
+      }">
+          <a class="page-link" href="#" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+      </li>`;
+
+      return paginationHTML;
+    };
+
+    const updatePagination = (currentPage) => {
+      const paginationHTML = generatePagination(currentPage);
+      $("#paginationMaster ul").html(paginationHTML);
+    };
+
+    const loadPageData = (page) => {
+      const startIdx = (page - 1) * moviesOnPage;
+      const endIdx = startIdx + moviesOnPage;
+      const data = movies.slice(startIdx, endIdx);
+
+      // Assuming you have a reference to your LoadMovies instance
+      const loadMoviesInstance = new LoadMovies();
+      loadMoviesInstance.pageUpdate(lang, data);
+    };
+
+    const renderPagination = (currentPage) => {
+      const paginationHTML = generatePagination(currentPage);
+      $("#paginationMaster").html(`
+        <nav aria-label="Page navigation example">
+          <ul class="pagination justify-content-center align-items-center">
+            ${paginationHTML}
+          </ul>
+        </nav>
+      `);
+    };
+
+    // Load initial data for the first page
+    loadPageData(1);
+
+    // Render initial pagination
+    renderPagination(1);
+
+    // Event listener for pagination links
+    $("#paginationMaster").on("click", ".page-link", (e) => {
+      e.preventDefault();
+      const clickedPage = $(e.currentTarget).data("page");
+
+      // Update the pagination based on the clicked page
+      updatePagination(clickedPage);
+
+      // Load data for the clicked page
+      loadPageData(clickedPage);
+      const scrollDiv = document.getElementById("paginationMaster").offsetTop;
+      window.scrollTo({ top: scrollDiv - 70, behavior: "smooth" });
+    });
+  };
+
+  pageUpdate = (filter, data) => {
     $(".tabArea").show();
     $("#" + filter).html("");
-    const data = JSON.parse(window.localStorage.getItem("albumData"));
 
     const colorsArray = [
       "rgba(0,191,255,1.0)",
@@ -171,27 +303,28 @@ class LoadMovies {
       let randomColor = randomColorGenerator();
 
       const albumName = (name) => {
-        if (name.length > 24) {
-          return name.slice(0, 24) + "...";
+        if (name.length > 20) {
+          return name.slice(0, 20) + "...";
         } else {
-          return name.slice(0, 24);
+          return name.slice(0, 20);
         }
       };
 
       const albumFName = (name) => {
-        if (name.length > 70) {
-          return name.slice(0, 70) + "...";
+        if (name.length > 60) {
+          return name.slice(0, 60) + "...";
         } else {
-          return name.slice(0, 70);
+          return name.slice(0, 60);
         }
       };
 
-      const appender = async (movie) => {
+      const appender = async (movie, filter) => {
         $("#" + movie.filter).append(`
             <div class="col-2 col-md-4 col-sm-6 col-xs-6 container_foto">
-              <a href="javascript:new LoadMovies().downloadAlert(${
-                movie.index
-              })">
+            <a href="javascript:new LoadMovies().downloadAlert('${filter}', ${
+          movie.index
+        })">
+
                 <div class="ver_mas">
                   <svg id="click" xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="white" style="margin-top: 18px" class="bi bi-eye-fill text-center" viewBox="0 0 16 16">
                     <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
@@ -229,18 +362,14 @@ class LoadMovies {
         filter: filter,
         index: index,
       };
-      filter === "All"
-        ? appender(passedData)
-        : ["Eng", "Tam", "Tel", "Hin", "Mal", "Kan"].includes(filter) &&
-          ftitle.indexOf(filter) >= 0
-        ? appender(passedData)
-        : false;
+
+      appender(passedData, filter);
     }); //end of each loops
   };
 
   // showing modal to download content
-  downloadAlert = (curLink) => {
-    const data = JSON.parse(window.localStorage.getItem("albumData"));
+  downloadAlert = (lang, curLink) => {
+    const data = JSON.parse(window.localStorage.getItem(lang));
     const movie = data[curLink];
 
     $(".carousel-inner").html("");
@@ -284,6 +413,7 @@ class LoadMovies {
       const titleArray = movieName
         .replace("ESub.torrent", "")
         .replace("ESub.mkv.torrent", "")
+        .slice(0, 60)
         .substring(movieName.indexOf(")") + 1)
         .split(" - ");
 

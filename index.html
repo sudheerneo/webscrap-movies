@@ -26,14 +26,14 @@
     ></script>
   </head>
 
-  <body>
+  <body data-bs-theme="dark">
     <nav
       class="navbar fixed-top navbar-expand-lg bg-body-tertiary navbar bg-dark w-100"
       data-bs-theme="dark"
       style="z-index: 1040"
     >
       <div class="container-fluid">
-        <a class="navbar-brand" href="/src/albums.php">Albums Viewer</a>
+        <a class="navbar-brand" href="/src/albums.php">Movie Browser</a>
         <button
           class="navbar-toggler"
           type="button"
@@ -72,7 +72,7 @@
             role="tablist"
             style="margin-top: 55px"
           >
-            <button
+            <!-- <button
               class="nav-link active"
               id="nav-allLaunguages-tab"
               data-bs-toggle="tab"
@@ -83,7 +83,7 @@
               aria-selected="true"
             >
               All launguages
-            </button>
+            </button> -->
             <button
               class="nav-link"
               id="nav-english-tab"
@@ -109,14 +109,14 @@
               தமிழ்
             </button>
             <button
-              class="nav-link"
+              class="nav-link active"
               id="nav-telugu-tab"
               data-bs-toggle="tab"
               data-bs-target="#nav-telugu"
               type="button"
               role="tab"
               aria-controls="nav-contact"
-              aria-selected="false"
+              aria-selected="true"
             >
               తెలుగు
             </button>
@@ -159,7 +159,7 @@
           </div>
         </nav>
         <div class="tab-content" id="nav-tabContent tabber">
-          <div
+          <!-- <div
             class="tab-pane fade show active"
             id="nav-allLaunguages"
             role="tabpanel"
@@ -167,7 +167,7 @@
             tabindex="0"
           >
             <div id="All" class="row showcase justify-content-center"></div>
-          </div>
+          </div> -->
           <div
             class="tab-pane fade text-center"
             id="nav-english"
@@ -187,7 +187,7 @@
             <div id="Tam" class="row showcase justify-content-center"></div>
           </div>
           <div
-            class="tab-pane fade"
+            class="tab-pane fade show active"
             id="nav-telugu"
             role="tabpanel"
             aria-labelledby="nav-telugu-tab"
@@ -223,11 +223,32 @@
             <div id="Mal" class="row showcase justify-content-center"></div>
           </div>
           <!-- <div class="tab-pane fade" id="nav-disabled" role="tabpanel" aria-labelledby="nav-disabled-tab" tabindex="0">...</div> -->
+          <div class="container pb-5 mb-0" id="paginationMaster">
+            <!-- <nav aria-label="Page navigation example">
+              <ul class="pagination justify-content-center align-items-center">
+                <li class="page-item">
+                  <a class="page-link" href="#" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                  </a>
+                </li>
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item"><a class="page-link" href="#">4</a></li>
+                <li class="page-item"><a class="page-link" href="#">5</a></li>
+                <li class="page-item">
+                  <a class="page-link" href="#" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                  </a>
+                </li>
+              </ul>
+            </nav> -->
+          </div>
         </div>
       </div>
       <!-- tabArea end div -->
 
-      <div class="cnt" style="padding-top: 100px">
+      <!-- <div class="cnt" style="padding-top: 100px; display: none">
         <div id="statBox" class="container">
           <h4 class="text-center mb-3">Status of the task</h4>
           <div class="progress">
@@ -244,7 +265,7 @@
         <div id="statBox" class="container-fluid">
           <h4 id="progms"></h4>
         </div>
-      </div>
+      </div> -->
       <!-- cnt div end -->
 
       <!-- Modal -->
@@ -372,7 +393,7 @@
               aria-label="Close"
             ></button>
           </div>
-          <div class="toast-body" style="color: rgba(33, 37, 41, 0.75)">
+          <div class="toast-body text-light">
             Hello, world! This is a toast message.
           </div>
         </div>
