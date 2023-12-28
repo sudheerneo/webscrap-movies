@@ -170,23 +170,54 @@ class LoadMovies {
 
       let randomColor = randomColorGenerator();
 
+      const albumName = (name) => {
+        if (name.length > 24) {
+          return name.slice(0, 24) + "...";
+        } else {
+          return name.slice(0, 24);
+        }
+      };
+
+      const albumFName = (name) => {
+        if (name.length > 70) {
+          return name.slice(0, 70) + "...";
+        } else {
+          return name.slice(0, 70);
+        }
+      };
+
       const appender = async (movie) => {
         $("#" + movie.filter).append(`
-                    <div class="col-2 col-md-4 col-sm-6 col-xs-6 container_foto">
-                    <div class="ver_mas">
-                        <a href="javascript:new LoadMovies().downloadAlert(${movie.index})">
-                        <svg id="click" xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="white" style="margin-top: 18px" class="bi bi-eye-fill text-center" viewBox="0 0 16 16">
-                            <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
-                            <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"/>
-                        </svg>
-                        </a>
-                    </div>
-                    <article style="background-image: linear-gradient(rgba(10,0,0,0.5), ${movie.randomColor})" class="text-left">
-                        <h2 style="font-size: 17px;">${movie.title}<br><span class="light">${movie.year}</span></h2>
-                        <h4 style="font-size: 12px">${movie.ftitle}</h4>
-                    </article>
-                    <img class="imgthums lazyload" src="${movie.poster}" data-original="${movie.poster}" referrerpolicy="no-referrer" alt="Image">
-                    </div>  
+            <div class="col-2 col-md-4 col-sm-6 col-xs-6 container_foto">
+              <a href="javascript:new LoadMovies().downloadAlert(${
+                movie.index
+              })">
+                <div class="ver_mas">
+                  <svg id="click" xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="white" style="margin-top: 18px" class="bi bi-eye-fill text-center" viewBox="0 0 16 16">
+                    <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
+                    <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
+                  </svg>
+                </div>
+              </a>
+              <article style="background-image: linear-gradient(rgba(10,0,0,0.5), ${
+                movie.randomColor
+              })" class="text-left">
+                <h2 class="w-100 " style="font-size: 17px;">${albumName(
+                  movie.title
+                )}<br>
+                  <span class="light">${movie.year}</span>
+                </h2>
+                <h4 class="w-100" style="font-size: 12px;">${albumFName(
+                  movie.ftitle
+                )}</h4>
+              </article>
+              <img class="imgthums lazyload" src="${
+                movie.poster
+              }" data-original="${
+          movie.poster
+        }" referrerpolicy="no-referrer" alt="Image"  onerror="this.src='/images/gradient.jpg';"
+        >
+            </div>
                 `);
       };
       const passedData = {
@@ -222,7 +253,7 @@ class LoadMovies {
           const actveCheck = index === 0 ? "active" : "";
           $(".carousel-inner").append(` 
                     <div class="carousel-item ${actveCheck}"> 
-                    <img src="${image}" class="d-block w-100" alt="image${index}">
+                    <img src="${image}" class="d-block w-100" alt="image${index}"  onerror="this.src='/images/defbg.png';">
                     </div>
                     `);
           $(".carousel-indicators").append(`
@@ -231,7 +262,7 @@ class LoadMovies {
         })
       : ($(".carousel-inner").append(` 
                 <div class="carousel-item active"> 
-                <img src="${window.location.href}/images/defbg.png" class="d-block w-100" alt="image 1">
+                <img src="${window.location.href}/images/defbg.png" class="d-block w-100" alt="image 1"  onerror="this.src='/images/defbg.png';">
                 </div>
                 `),
         $(".carousel-indicators").append(`
