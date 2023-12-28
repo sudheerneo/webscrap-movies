@@ -367,6 +367,10 @@ class LoadMovies {
     }); //end of each loops
   };
 
+  downloadFileInTab(title, url) {
+    window.open(url, "_blank");
+  }
+
   downloadFile(title, url) {
     console.log("donwload file called");
     console.log(`title: ${title}\n url : ${url}`);
@@ -506,7 +510,7 @@ class LoadMovies {
                         <div class="col">
                         <a href="javascript:void(0);" onclick="
                             const loadMoviesInstance = new LoadMovies();
-                            loadMoviesInstance.downloadFile(
+                            loadMoviesInstance.downloadFileInTab(
                             decodeURIComponent('${encodeURIComponent(
                               movieName
                             )}'),
