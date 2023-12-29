@@ -70,12 +70,20 @@ class LoadMovies {
       const response = await fetch(url + "trendingMovies.json");
       var data = await response.json();
 
-      const tel = data.filter((item) => item.title.includes("Tel"));
-      const eng = data.filter((item) => item.title.includes("Eng"));
-      const tam = data.filter((item) => item.title.includes("Tam"));
-      const hin = data.filter((item) => item.title.includes("Hin"));
-      const mal = data.filter((item) => item.title.includes("Mal"));
-      const kan = data.filter((item) => item.title.includes("Kan"));
+      var tel = data.filter((item) => item.title.includes("Tel"));
+      var eng = data.filter((item) => item.title.includes("Eng"));
+      var tam = data.filter((item) => item.title.includes("Tam"));
+      var hin = data.filter((item) => item.title.includes("Hin"));
+      var mal = data.filter((item) => item.title.includes("Mal"));
+      var kan = data.filter((item) => item.title.includes("Kan"));
+
+      tel = tel.map((prevData, index) => ({ ...prevData, id: index }));
+      eng = eng.map((prevData, index) => ({ ...prevData, id: index }));
+      tam = tam.map((prevData, index) => ({ ...prevData, id: index }));
+      hin = hin.map((prevData, index) => ({ ...prevData, id: index }));
+      mal = mal.map((prevData, index) => ({ ...prevData, id: index }));
+      kan = kan.map((prevData, index) => ({ ...prevData, id: index }));
+      data = data.map((prevData, index) => ({ ...prevData, id: index }));
 
       const albums = {
         all: data,
@@ -86,6 +94,7 @@ class LoadMovies {
         mal: mal,
         kan: kan,
       };
+
       try {
         if ($(window).width() > 960) {
           window.localStorage.clear();
@@ -322,7 +331,7 @@ class LoadMovies {
         $("#" + movie.filter).append(`
             <div class="col-2 col-md-4 col-sm-6 col-xs-6 container_foto">
             <a href="javascript:new LoadMovies().downloadAlert('${filter}', ${
-          movie.index
+          movie.id
         })">
 
                 <div class="ver_mas">
@@ -361,6 +370,7 @@ class LoadMovies {
         poster: poster,
         filter: filter,
         index: index,
+        id: val.id,
       };
 
       appender(passedData, filter);
@@ -368,7 +378,8 @@ class LoadMovies {
   };
 
   downloadFileInTab(title, url) {
-    window.open(url, "_blank");
+    // window.open(url, "_blank");
+    location.href = url;
   }
 
   downloadFile(title, url) {
