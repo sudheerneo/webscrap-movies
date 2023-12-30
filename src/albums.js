@@ -128,8 +128,10 @@ class LoadMovies {
       $(".navbar-nav li:nth-child(1) a").hide();
       $(".navbar-nav li:nth-child(2) a").hide();
 
-      const toast = new bootstrap.Toast($("#liveToast"));
-      toast.show(); //toast end
+      setTimeout(() => {
+        const toast = new bootstrap.Toast($("#liveToast"));
+        toast.show(); //toast end
+      }, 6000);
 
       //warning
       // Create a modal using jQuery
@@ -162,22 +164,26 @@ class LoadMovies {
 
         // Show the modal when the page loads
         $("#warning").modal("show");
-      }, 7000);
+      }, 30000);
     } catch (err) {
       console.log(err);
     }
   };
 
   pageUpdateTrigger = (lang) => {
-    const movies = JSON.parse(window.localStorage.getItem(lang));
-    const rowItems = parseInt($(window).width() / 250);
-    const colItems = parseInt($(window).height() / 390);
-    const moviesOnPage = $(window).width() > 960 ? rowItems * colItems : 10; // for mobile show 10 per page
+    const width = $(window).width();
+    const height = $(window).height();
+
+    const data = window.localStorage.getItem(lang);
+    const movies = JSON.parse(data);
+    const rowItems = parseInt(width / 250); // 250 ideal preview width of thumbnail
+    const colItems = parseInt(height / 390); // 390ideal preview heigh of thumbnail
+    const moviesOnPage = width > 960 ? rowItems * colItems : 10; // for mobile show 10 per page
     const totalPages = Math.ceil(movies.length / moviesOnPage);
 
     const generatePagination = (currentPage) => {
-      // const maxVisiblePages = 5;
-      const maxVisiblePages = $(window).width() > 960 ? 5 : 3;
+      // alert(width);
+      const maxVisiblePages = width > 960 ? 15 : width > 320 ? 5 : 3;
 
       const halfVisible = Math.floor(maxVisiblePages / 2);
 
