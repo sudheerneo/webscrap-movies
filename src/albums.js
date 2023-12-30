@@ -176,7 +176,9 @@ class LoadMovies {
     const totalPages = Math.ceil(movies.length / moviesOnPage);
 
     const generatePagination = (currentPage) => {
-      const maxVisiblePages = 5;
+      // const maxVisiblePages = 5;
+      const maxVisiblePages = $(window).width() > 960 ? 5 : 3;
+
       const halfVisible = Math.floor(maxVisiblePages / 2);
 
       let startPage = Math.max(1, currentPage - halfVisible);
