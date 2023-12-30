@@ -113,8 +113,6 @@ class LoadMovies {
         console.error("Error saving data to localStorage:", error);
       }
 
-      // window.localStorage.setItem("albumData", JSON.stringify(data));
-      // console.log(JSON.parse(window.localStorage.getItem("albumData")));
       this.pageUpdateTrigger("Tel");
       // show toast
       $(".toast-body").text(
@@ -183,37 +181,49 @@ class LoadMovies {
 
       let startPage = Math.max(1, currentPage - halfVisible);
       let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
-      renderPagination;
+
       if (endPage - startPage + 1 < maxVisiblePages) {
         startPage = Math.max(1, endPage - maxVisiblePages + 1);
       }
 
-      let paginationHTML = `<li class="page-item ${
-        // currentPage === 1 ? "disabled" : ""
-        "disabled"
-      }">
-        <a class="page-link" href="#" aria-label="Previous">
-          <span aria-hidden="true">&laquo;</span>
-        </a>
-      </li>`;
+      let paginationHTML = `
+            <li class="page-item ${currentPage === 1 ? "disabled" : ""}">
+                <a class="page-link" href="#" aria-label="Start" data-page="1">
+                    <span aria-hidden="true">&#171;&#171;</span>
+                </a>
+            </li>
+            <li class="page-item ${currentPage === 1 ? "disabled" : ""}">
+                <a class="page-link" href="#" aria-label="Previous" data-page="${
+                  currentPage - 1
+                }">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>`;
 
       for (let i = startPage; i <= endPage; i++) {
-        paginationHTML += `<li class="page-item ${
-          i === currentPage ? "active" : ""
-        }">
-          <a class="page-link" href="#" data-page="${i}">${i}</a>
-        </li>`;
+        paginationHTML += `
+                <li class="page-item ${i === currentPage ? "active" : ""}">
+                    <a class="page-link" href="#" data-page="${i}">${i}</a>
+                </li>`;
       }
-      renderPagination;
 
-      paginationHTML += `<li class="page-item ${
-        // currentPage === totalPages ? "disabled" : ""
-        "disabled"
-      }">
-          <a class="page-link" href="#" aria-label="Next">
-            <span aria-hidden="true">&raquo;</span>
-          </a>
-      </li>`;
+      paginationHTML += `
+            <li class="page-item ${
+              currentPage === totalPages ? "disabled" : ""
+            }">
+                <a class="page-link" href="#" aria-label="Next" data-page="${
+                  currentPage + 1
+                }">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+            <li class="page-item ${
+              currentPage === totalPages ? "disabled" : ""
+            }">
+                <a class="page-link" href="#" aria-label="End" data-page="${totalPages}">
+                    <span aria-hidden="true">&#187;&#187;</span>
+                </a>
+            </li>`;
 
       return paginationHTML;
     };
@@ -236,22 +246,15 @@ class LoadMovies {
     const renderPagination = (currentPage) => {
       const paginationHTML = generatePagination(currentPage);
       $("#paginationMaster").html(`
-        <nav aria-label="Page navigation example">
-          <ul class="pagination justify-content-center align-items-center">
-            ${paginationHTML}
-          </ul>
-        </nav>
-      `);
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center align-items-center">
+                    ${paginationHTML}
+                </ul>
+            </nav>
+        `);
     };
 
-    // Load initial data for the first page
-    loadPageData(1);
-
-    // Render initial pagination
-    renderPagination(1);
-
-    // Event listener for pagination links
-    $("#paginationMaster").on("click", ".page-link", (e) => {
+    const handlePageClick = (e) => {
       e.preventDefault();
       const clickedPage = $(e.currentTarget).data("page");
 
@@ -262,7 +265,18 @@ class LoadMovies {
       loadPageData(clickedPage);
       const scrollDiv = document.getElementById("paginationMaster").offsetTop;
       window.scrollTo({ top: scrollDiv - 70, behavior: "smooth" });
-    });
+    };
+
+    // Load initial data for the first page
+    loadPageData(1);
+
+    // Render initial pagination
+    renderPagination(1);
+
+    // Event listener for pagination links
+    $("#paginationMaster")
+      .off("click", ".page-link")
+      .on("click", ".page-link", handlePageClick);
   };
 
   pageUpdate = (filter, data) => {
@@ -443,7 +457,7 @@ class LoadMovies {
           const actveCheck = index === 0 ? "active" : "";
           $(".carousel-inner").append(` 
                     <div class="carousel-item ${actveCheck}"> 
-                    <img src="${image}" class="d-block w-100" alt="image${index}"  onerror="this.src='/images/defbg.png';">
+                    <img src="${image}" class="d-block w-100 object-fit-contain" alt="image${index}"  onerror="this.src='/images/defbg.png';">
                     </div>
                     `);
           $(".carousel-indicators").append(`
