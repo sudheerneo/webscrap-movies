@@ -6,25 +6,34 @@ $(document).ready(function () {
     $("#spinnerModal").modal("hide");
   }, 5000);
   const path = $(location).attr("pathname");
-  const screenWidth = screen.width;
+  const screenWidth = $(window).width();
   // alert(screenWidth);
+
+  //mobile detector
+  if (
+    navigator.userAgent.match(/Android/i) ||
+    navigator.userAgent.match(/webOS/i) ||
+    navigator.userAgent.match(/iPhone/i) ||
+    navigator.userAgent.match(/iPod/i)
+  ) {
+    console.log("This is a mobile device");
+  }
 
   //check auto bot initiate backup else show albumbs
   path === "/dbupdateservice.php"
     ? (new UpdateData(), $("#spinnerModal").modal("hide"))
     : new LoadMovies().checkDatabaseAPI();
 
-  // // new Mailer(150, 500);
-  // screenWidth < 700
-  //   ? $(".tabNav").html(`
-  //       <div class="nav nav-tabs fixed-top bg-dark mt-5 nav-fill justify-content-center pt-3 ps-2 pe-2" id="nav-tab" style="font-size: 9px;" role="tablist">
-  //     	<button class="nav-link" id="nav-english-tab" data-bs-toggle="tab" data-bs-target="#nav-english" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">English</button>
-  // 			<button class="nav-link" id="nav-tamil-tab" data-bs-toggle="tab" data-bs-target="#nav-tamil" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">தமிழ்</button>
-  // 			<button class="nav-link" id="nav-telugu-tab" data-bs-toggle="tab" data-bs-target="#nav-telugu" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">తెలుగు</button>
-  // 			<button class="nav-link" id="nav-hindi-tab" data-bs-toggle="tab" data-bs-target="#nav-hindi" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">हिंदी</button>
-  //       </div>'
-  //     `)
-  //   : "";
+  screenWidth < 900 &&
+    ($("#nav-tamil-tab").hide(),
+    $("#nav-hindi-tab").hide(),
+    $("#nav-malayalam-tab").hide());
+
+  screenWidth < 350 &&
+    ($("#nav-malayalam-tab").hide(),
+    $("#nav-tamil-tab").hide(),
+    $("#nav-hindi-tab").hide(),
+    $("#nav-kannada-tab").hide());
 
   $("#dbupdateCloud").on("click", function () {
     new LoadMovies().albumsDBupdate();
@@ -50,12 +59,6 @@ $(document).ready(function () {
   });
 });
 
-$(window).width() < 960 &&
-  ($("#nav-malayalam-tab").hide(),
-  $("#nav-tamil-tab").hide(),
-  $("#nav-hindi-tab").hide(),
-  $("#nav-kannada-tab").hide());
-
 //retrieve stored json file on server and store as window object that can access faster later requests
 class LoadMovies {
   constructor() {}
@@ -64,26 +67,67 @@ class LoadMovies {
   checkDatabaseAPI = async () => {
     try {
       // const response = await fetch(
-      //   window.location.href + "/src/showcaselocal.json"
+      //   window.location.href + "/src/trendingMovies.json"
       // );
       const url = "https://sudheerneo.github.io/json_test_api/";
       const response = await fetch(url + "trendingMovies.json");
       var data = await response.json();
 
-      var tel = data.filter((item) => item.title.includes("Tel"));
-      var eng = data.filter((item) => item.title.includes("Eng"));
-      var tam = data.filter((item) => item.title.includes("Tam"));
-      var hin = data.filter((item) => item.title.includes("Hin"));
-      var mal = data.filter((item) => item.title.includes("Mal"));
-      var kan = data.filter((item) => item.title.includes("Kan"));
+      var tel = data
+        .filter((item) => item.title.includes("Tel"))
+        .map((prevData, index) => ({
+          ...prevData,
+          id: index,
+          torrlinks: [...prevData.torrlinks.slice(0, 3)],
+          magLinks: [...prevData.magLinks.slice(0, 3)],
+        }));
+      var eng = data
+        .filter((item) => item.title.includes("Eng"))
+        .map((prevData, index) => ({
+          ...prevData,
+          id: index,
+          torrlinks: [...prevData.torrlinks.slice(0, 3)],
+          magLinks: [...prevData.magLinks.slice(0, 3)],
+        }));
+      var tam = data
+        .filter((item) => item.title.includes("Tam"))
+        .map((prevData, index) => ({
+          ...prevData,
+          id: index,
+          torrlinks: [...prevData.torrlinks.slice(0, 3)],
+          magLinks: [...prevData.magLinks.slice(0, 3)],
+        }));
+      var hin = data
+        .filter((item) => item.title.includes("Hin"))
+        .map((prevData, index) => ({
+          ...prevData,
+          id: index,
+          torrlinks: [...prevData.torrlinks.slice(0, 3)],
+          magLinks: [...prevData.magLinks.slice(0, 3)],
+        }));
+      var mal = data
+        .filter((item) => item.title.includes("Mal"))
+        .map((prevData, index) => ({
+          ...prevData,
+          id: index,
+          torrlinks: [...prevData.torrlinks.slice(0, 3)],
+          magLinks: [...prevData.magLinks.slice(0, 3)],
+        }));
+      var kan = data
+        .filter((item) => item.title.includes("Kan"))
+        .map((prevData, index) => ({
+          ...prevData,
+          id: index,
+          torrlinks: [...prevData.torrlinks.slice(0, 3)],
+          magLinks: [...prevData.magLinks.slice(0, 3)],
+        }));
 
-      tel = tel.map((prevData, index) => ({ ...prevData, id: index }));
-      eng = eng.map((prevData, index) => ({ ...prevData, id: index }));
-      tam = tam.map((prevData, index) => ({ ...prevData, id: index }));
-      hin = hin.map((prevData, index) => ({ ...prevData, id: index }));
-      mal = mal.map((prevData, index) => ({ ...prevData, id: index }));
-      kan = kan.map((prevData, index) => ({ ...prevData, id: index }));
-      data = data.map((prevData, index) => ({ ...prevData, id: index }));
+      data = data.map((prevData, index) => ({
+        ...prevData,
+        id: index,
+        torrlinks: [...prevData.torrlinks.slice(0, 3)],
+        magLinks: [...prevData.magLinks.slice(0, 3)],
+      }));
 
       const albums = {
         all: data,
@@ -98,16 +142,17 @@ class LoadMovies {
       try {
         if ($(window).width() > 960) {
           window.localStorage.clear();
-          window.localStorage.setItem("Tel", JSON.stringify(tel.slice(0, 200)));
-          window.localStorage.setItem("Eng", JSON.stringify(eng.slice(0, 100)));
-          window.localStorage.setItem("Tam", JSON.stringify(tam.slice(0, 100)));
-          window.localStorage.setItem("Hin", JSON.stringify(hin.slice(0, 100)));
-          window.localStorage.setItem("Mal", JSON.stringify(mal.slice(0, 100)));
-          window.localStorage.setItem("Kan", JSON.stringify(kan.slice(0, 100)));
+          window.localStorage.setItem("Tel", JSON.stringify(tel.slice(0, 300)));
+          window.localStorage.setItem("Eng", JSON.stringify(eng.slice(0, 200)));
+          window.localStorage.setItem("Tam", JSON.stringify(tam.slice(0, 200)));
+          window.localStorage.setItem("Hin", JSON.stringify(hin.slice(0, 200)));
+          window.localStorage.setItem("Mal", JSON.stringify(mal.slice(0, 200)));
+          window.localStorage.setItem("Kan", JSON.stringify(kan.slice(0, 200)));
         } else {
           window.localStorage.clear();
-          window.localStorage.setItem("Tel", JSON.stringify(tel.slice(0, 200)));
-          window.localStorage.setItem("Eng", JSON.stringify(eng.slice(0, 100)));
+          window.localStorage.setItem("Tel", JSON.stringify(tel.slice(0, 300)));
+          window.localStorage.setItem("Eng", JSON.stringify(eng.slice(0, 200)));
+          window.localStorage.setItem("Kan", JSON.stringify(kan.slice(0, 200)));
         }
       } catch (error) {
         console.error("Error saving data to localStorage:", error);
@@ -116,14 +161,22 @@ class LoadMovies {
       this.pageUpdateTrigger("Tel");
       // show toast
       $(".toast-body").text(
-        `Db Date :  ${new Date(data[0].updatedOn).toLocaleDateString()}. ${
-          data.length
-        } movies pulled`
+        `Db Date :  ${new Date(data[0].updatedOn)
+          .toLocaleDateString("en-US", {
+            day: "2-digit",
+            month: "2-digit",
+            year: "2-digit",
+          })
+          .replace(/\//g, ".")}. ${data.length} movies pulled`
       );
       $(".navbar-nav li:nth-child(3) a").text(
         `Db Version - ${new Date(data[0].updatedOn)
-          .toLocaleDateString()
-          .replace(/\//g, ":")} `
+          .toLocaleDateString("en-US", {
+            day: "2-digit",
+            month: "2-digit",
+            year: "2-digit",
+          })
+          .replace(/\//g, ".")} `
       );
       $(".navbar-nav li:nth-child(1) a").hide();
       $(".navbar-nav li:nth-child(2) a").hide();
@@ -176,7 +229,9 @@ class LoadMovies {
 
     const data = window.localStorage.getItem(lang);
     const movies = JSON.parse(data);
-    const rowItems = parseInt(width / 250); // 250 ideal preview width of thumbnail
+    // const rowItems = parseInt(width / 250); // 250 ideal preview width of thumbnail
+    // const colItems = parseInt(height / 390); // 390ideal preview heigh of thumbnail
+    const rowItems = parseInt(width / 280); // 250 ideal preview width of thumbnail
     const colItems = parseInt(height / 390); // 390ideal preview heigh of thumbnail
     const moviesOnPage = width > 960 ? rowItems * colItems : 10; // for mobile show 10 per page
     const totalPages = Math.ceil(movies.length / moviesOnPage);
@@ -484,7 +539,8 @@ class LoadMovies {
     $(".accordion").html("");
 
     // adding Download links with array in movie
-    movie.torrlinks.map((mov, index) => {
+    const downloadLinks = movie.torrlinks;
+    downloadLinks.map((mov, index) => {
       const movieName = mov.torrName;
       const title = movieName.toString().substring(0, movieName.indexOf("("));
       const yearMatch = movieName.match(/\(([^)]+)\)/);
