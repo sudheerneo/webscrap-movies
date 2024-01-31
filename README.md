@@ -1,8 +1,9 @@
 # webscap-movietorrents
 Its a educational purpose webscapper test project that scraps latest Indian movie torrents  from different website and make json api with that to dispay content properly for best user experience. If you want to try, rename example.env to .env and fill details.
 
+- Home page with Live previews  
 ![Screenshots](https://github.com/sudheerneo/webscrap-movies/blob/main/webscrapmoviesweb.png?raw=true)
-
+- download links page
 ![Screenshots2](https://github.com/sudheerneo/webscrap-movies/blob/main/webscrapmoviesdownload.png?raw=true)
 
 
